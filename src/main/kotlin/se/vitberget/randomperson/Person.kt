@@ -1,7 +1,5 @@
 package se.vitberget.randomperson
 
-import kotlin.random.Random
-
 data class Person(
     val pn: Int,
     val married: Int? = null,
@@ -35,36 +33,3 @@ data class Person(
         )
 }
 
-fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List<String>, cities: List<City>) =
-    Person(
-        pn = PNGenerator.generate(),
-        firstNames = (1..Random.nextInt(1, 4))
-            .map { firstNames.random() },
-        surName = surNames.random(),
-        streetName = streets.random(),
-        streetNumber = Random.nextInt(1, 200),
-        city = cities.random()
-    )
-
-fun marryRandom(persons: List<Person>, times: Int = 1): List<Person> {
-    var modPersons = persons
-
-    for (i in 1..times) {
-        val unmarried = modPersons
-            .filter { it.married == null }
-
-        val p1 = unmarried.random()
-
-        val p2 = unmarried
-            .filter { it.pn != p1.pn }
-            .random()
-
-        modPersons = modPersons
-            .filter { it.pn != p1.pn }
-            .filter { it.pn != p2.pn } +
-                p1.marriedTo(p2) +
-                p2.marriedTo(p1)
-    }
-
-    return modPersons
-}

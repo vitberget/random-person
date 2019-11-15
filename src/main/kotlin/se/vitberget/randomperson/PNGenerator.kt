@@ -8,7 +8,7 @@ object PNGenerator {
     fun generate(): Int {
         synchronized(generatedPNRs) {
             while (true) {
-                val pnr = Random.nextInt(100_000, 999_999)
+                val pnr = Random.nextInt(1_000_000, 9_999_999)
 
                 if (!generatedPNRs.contains(pnr)) {
                     generatedPNRs.add(pnr)
@@ -17,4 +17,6 @@ object PNGenerator {
             }
         }
     }
+
+    fun pns() = generatedPNRs.toList()
 }
