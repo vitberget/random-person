@@ -6,14 +6,19 @@ fun main(args: Array<String>) {
     val streets = getStreets()
     val cities = getCities()
 
-    val persons = (1..1_000_00).map { randomPerson(firstNames, surNames, streets, cities) }
+    val persons = (1..1_000).map { randomPerson(firstNames, surNames, streets, cities) }
 
-    println("pns ${PNGenerator.pns().sorted()}")
+    println("persons ${persons.size}")
 
-    marryRandom(persons, 10_000)
-        .forEach {
-            println(it)
-            println()
+//    println("pns ${PNGenerator.pns().sorted()}")
+
+    marryRandom(persons, 200)
+        .forEachIndexed { i, it ->
+            println(
+                """# ${i + 1}
+${it}
+"""
+            )
         }
 }
 

@@ -10,7 +10,8 @@ fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List
         surName = surNames.random(),
         streetName = streets.random(),
         streetNumber = Random.nextInt(1, 200),
-        city = cities.random()
+        city = cities.random(),
+        age = Random.nextInt(20, 80)
     )
 
 
@@ -20,6 +21,9 @@ fun marryRandom(persons: List<Person>, times: Int = 1): List<Person> {
     val marriedByMe = mutableListOf<Person>()
 
     (1..times).forEach {
+        if (it % 100 == 0)
+            println("married $it/$times")
+
         val p1 = unmarried.random()
         unmarried.remove(p1)
 
