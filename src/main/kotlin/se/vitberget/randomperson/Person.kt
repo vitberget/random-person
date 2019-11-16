@@ -8,13 +8,13 @@ data class Person(
     val streetName: String,
     val streetNumber: Int,
     val city: City,
-    val age: Int
+    val born: Int
 ) {
 
     override fun toString(): String {
 
         return """
-            Person: $pn ${if (married != null) "married to $married" else ""} age $age 
+            Person: $pn, born $born, ${if (married != null) "married to $married" else ""}
             ${firstNames.joinToString(separator = " ")} $surName
             $streetName $streetNumber
             ${city.code} ${city.name}
@@ -31,7 +31,7 @@ data class Person(
             streetNumber = streetNumber,
             streetName = streetName,
             city = city,
-            age = age
+            born = born
         )
 }
 

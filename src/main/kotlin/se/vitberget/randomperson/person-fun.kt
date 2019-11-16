@@ -1,5 +1,6 @@
 package se.vitberget.randomperson
 
+import java.time.Year
 import kotlin.random.Random
 
 fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List<String>, cities: List<City>) =
@@ -11,7 +12,7 @@ fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List
         streetName = streets.random(),
         streetNumber = Random.nextInt(1, 200),
         city = cities.random(),
-        age = Random.nextInt(20, 80)
+        born =  Year.now().value - Random.nextInt(20, 80)
     )
 
 
