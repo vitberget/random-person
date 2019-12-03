@@ -34,8 +34,8 @@ fun marryRandom(persons: List<Person>, times: Int = 1): List<Person> {
         modPersons.remove(p1)
         modPersons.remove(p2)
 
-        marriedByMe.add(p1.marriedTo(p2))
-        marriedByMe.add(p2.marriedTo(p1))
+        marriedByMe.add(p1.copy(married = p2.pn))
+        marriedByMe.add(p2.copy(married = p1.pn))
     }
 
     return modPersons + marriedByMe

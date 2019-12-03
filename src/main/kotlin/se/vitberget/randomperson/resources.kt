@@ -1,10 +1,12 @@
 package se.vitberget.randomperson
 
-fun processResourceIntoLines(resource: String) = String::class.java.getResource(resource)
-    .readText()
-    .lines()
-    .filter { it.isNotBlank() }
-    .map { it.trim() }
+fun processResourceIntoLines(resource: String) =
+    String::class.java.getResource(resource)
+        .readText()
+        .lines()
+        .filter { it.isNotBlank() }
+        .map { it.trim() }
+        .filterNot { it.startsWith("#") }
 
 
 fun getStreets() = processResourceIntoLines("/streets")
@@ -15,5 +17,11 @@ fun getFirstnames() = processResourceIntoLines("/first-names")
 fun getCities() = processResourceIntoLines("/cities")
     .map { it.split(" ") }
     .filter { it.size == 2 }
-    .filter { it[0].isNotBlank() && it[1].isNotBlank() }
-    .map { City(name = it[1].trim(), code = it[0].trim().toInt()) }
+    .filterNot { it[0].isBlank() }
+    .filterNot { it[1].isBlank() }
+    .map {
+        City(
+            name = it[1].trim(),
+            code = it[0].trim().toInt()
+        )
+    }

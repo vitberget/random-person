@@ -13,11 +13,13 @@ fun main(args: Array<String>) {
 //    println("pns ${PNGenerator.pns().sorted()}")
 
     marryRandom(persons, 200)
-        .forEachIndexed { i, it ->
+        .forEachIndexed { idx, person ->
             println(
-                """# ${i + 1}
-${it}
-"""
+                """
+                |# ${idx + 1}
+                |${person}
+                |
+                """.trimMargin()
             )
         }
 }

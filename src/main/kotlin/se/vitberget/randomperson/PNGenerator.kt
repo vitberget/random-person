@@ -3,12 +3,12 @@ package se.vitberget.randomperson
 import kotlin.random.Random
 
 object PNGenerator {
-    private var generatedPNRs = mutableSetOf<Int>()
+    private var generatedPNRs = mutableSetOf<Long>()
 
-    fun generate(): Int {
+    fun generate(): Long {
         synchronized(generatedPNRs) {
             while (true) {
-                val pnr = Random.nextInt(1_000_000, 9_999_999)
+                val pnr = Random.nextLong(1_000_000_000, 9_999_999_999)
 
                 if (!generatedPNRs.contains(pnr)) {
                     generatedPNRs.add(pnr)

@@ -1,8 +1,8 @@
 package se.vitberget.randomperson
 
 data class Person(
-    val pn: Int,
-    val married: Int? = null,
+    val pn: Long,
+    val married: Long? = null,
     val firstNames: List<String>,
     val surName: String,
     val streetName: String,
@@ -12,26 +12,11 @@ data class Person(
 ) {
 
     override fun toString(): String {
-
         return """
-            Person: $pn, born $born, ${if (married != null) "married to $married" else ""}
-            ${firstNames.joinToString(separator = " ")} $surName
-            $streetName $streetNumber
-            ${city.code} ${city.name}
-        """.trimIndent()
+            |Person: $pn, born $born, ${if (married != null) "married to $married" else ""}
+            |${firstNames.joinToString(separator = " ")} $surName
+            |$streetName $streetNumber
+            |${city.code} ${city.name}
+        """.trimMargin()
     }
-
-    fun marriedTo(partner: Person) =
-        Person(
-            married = partner.pn,
-
-            pn = pn,
-            firstNames = firstNames,
-            surName = surName,
-            streetNumber = streetNumber,
-            streetName = streetName,
-            city = city,
-            born = born
-        )
 }
-
