@@ -30,9 +30,8 @@ fun modifyPeople(
             println("married $it/$times")
 
         val p1 = unModded.random()
-        val p2 = unModded.random()
-
         unModded.remove(p1)
+        val p2 = unModded.random()
         unModded.remove(p2)
 
         modPersons.remove(p1)

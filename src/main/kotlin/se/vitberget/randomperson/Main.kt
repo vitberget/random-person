@@ -12,8 +12,12 @@ fun main(args: Array<String>) {
 
 //    println("pns ${PNGenerator.pns().sorted()}")
 
-    marryTraditionalPpl(persons, 2)
-        .forEachIndexed { idx, person ->
+    val moddedPersons = marryTraditionalPpl(persons, 2)
+
+    println("moddedPersons ${moddedPersons.size}")
+    println()
+
+    moddedPersons.forEachIndexed() { idx, person ->
             println(
                 """
                 |# ${idx + 1}
