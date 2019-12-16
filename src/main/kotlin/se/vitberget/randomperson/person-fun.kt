@@ -44,17 +44,29 @@ fun modifyPeople(
     return modPersons + moddedByMe
 }
 
-fun marryCouple(betrohed: List<Person>) =
+fun marryCouple(betrothed: List<Person>) =
     listOf(
-        betrohed[0].copy(married = betrohed[1].pn),
-        betrohed[1].copy(married = betrohed[0].pn)
+        betrothed[0].copy(married = betrothed[1].pn),
+        betrothed[1].copy(married = betrothed[0].pn)
     )
 
-fun <A, B, C, D> curryPeople(f: (A, B, C) -> D): (A) -> (B, C) -> D =
-    { a ->
-        { b, c ->
-            f(a, b, c)
+fun sameSurname(family: List<Person>) = family.map { it.copy(surName = family[0].surName) }
+
+fun <P1, P2, P3, RET> curryPeople(f: (P1, P2, P3) -> RET): (P1) -> (P2, P3) -> RET =
+    { p1 ->
+        { p2, p3 ->
+            f(p1, p2, p3)
         }
     }
 
 val marryPpl = curryPeople(::modifyPeople)(::marryCouple)
+
+fun peopleComposer(
+    f1: (List<Person>) -> List<Person>,
+    f2: (List<Person>) -> List<Person>)
+        : (List<Person>) -> List<Person> =
+    {f1(f2(it))}
+
+val traditionalCouple = peopleComposer(::marryCouple, ::sameSurname)
+
+val marryTraditionalPpl = curryPeople(::modifyPeople)(traditionalCouple)
