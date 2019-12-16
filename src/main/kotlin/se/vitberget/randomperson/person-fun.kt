@@ -12,31 +12,49 @@ fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List
         streetName = streets.random(),
         streetNumber = Random.nextInt(1, 200),
         city = cities.random(),
-        born =  Year.now().value - Random.nextInt(20, 80)
+        born = Year.now().value - Random.nextInt(20, 80)
     )
 
 
-fun marryRandom(persons: List<Person>, times: Int = 1): List<Person> {
+fun modifyPeople(
+    modderFn: (List<Person>) -> List<Person>,
+    persons: List<Person>,
+    times: Int
+): List<Person> {
     val modPersons = persons.toMutableList()
-    val unmarried = persons.filter { it.married == null }.toMutableList()
-    val marriedByMe = mutableListOf<Person>()
+    val unModded = persons.filter { it.married == null }.toMutableList()
+    val moddedByMe = mutableListOf<Person>()
 
     (1..times).forEach {
         if (it % 100 == 0)
             println("married $it/$times")
 
-        val p1 = unmarried.random()
-        unmarried.remove(p1)
+        val p1 = unModded.random()
+        val p2 = unModded.random()
 
-        val p2 = unmarried.random()
-        unmarried.remove(p2)
+        unModded.remove(p1)
+        unModded.remove(p2)
 
         modPersons.remove(p1)
         modPersons.remove(p2)
 
-        marriedByMe.add(p1.copy(married = p2.pn))
-        marriedByMe.add(p2.copy(married = p1.pn))
+        moddedByMe.addAll(modderFn(listOf(p1, p2)))
     }
 
-    return modPersons + marriedByMe
+    return modPersons + moddedByMe
 }
+
+fun marryCouple(betrohed: List<Person>) =
+    listOf(
+        betrohed[0].copy(married = betrohed[1].pn),
+        betrohed[1].copy(married = betrohed[0].pn)
+    )
+
+fun <A, B, C, D> curryPeople(f: (A, B, C) -> D): (A) -> (B, C) -> D =
+    { a ->
+        { b, c ->
+            f(a, b, c)
+        }
+    }
+
+val marryPpl = curryPeople(::modifyPeople)(::marryCouple)

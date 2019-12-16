@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
 
 //    println("pns ${PNGenerator.pns().sorted()}")
 
-    marryRandom(persons, 200)
+    marryPpl(persons, 200)
         .forEachIndexed { idx, person ->
             println(
                 """
