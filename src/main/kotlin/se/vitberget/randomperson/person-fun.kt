@@ -15,12 +15,9 @@ fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List
         born = Year.now().value - Random.nextInt(20, 80)
     )
 
+typealias PPL2PPL = (List<Person>) -> List<Person>
 
-fun modifyPeople(
-    modderFn: (List<Person>) -> List<Person>,
-    persons: List<Person>,
-    times: Int
-): List<Person> {
+fun modifyPeople(modderFn: PPL2PPL, persons: List<Person>, times: Int): List<Person> {
     val modPersons = persons.toMutableList()
     val unModded = persons.filter { it.married == null }.toMutableList()
     val moddedByMe = mutableListOf<Person>()
@@ -51,20 +48,18 @@ fun marryCouple(betrothed: List<Person>) =
 
 fun sameSurname(family: List<Person>) = family.map { it.copy(surName = family[0].surName) }
 
-fun <P1, P2, P3, RET> curryPeople(f: (P1, P2, P3) -> RET): (P1) -> (P2, P3) -> RET =
-    { p1 ->
-        { p2, p3 ->
-            f(p1, p2, p3)
+fun <PARAM1_TYPE, PARAM2_TYPE, PARAM3_TYPE, RETURN_TYPE>
+        curryPeople(theFunction: (PARAM1_TYPE, PARAM2_TYPE, PARAM3_TYPE) -> RETURN_TYPE):
+            (PARAM1_TYPE) -> (PARAM2_TYPE, PARAM3_TYPE) -> RETURN_TYPE =
+    { param1 ->
+        { param2, param3 ->
+            theFunction(param1, param2, param3)
         }
     }
 
 val marryPpl = curryPeople(::modifyPeople)(::marryCouple)
 
-fun peopleComposer(
-    f1: (List<Person>) -> List<Person>,
-    f2: (List<Person>) -> List<Person>)
-        : (List<Person>) -> List<Person> =
-    {f1(f2(it))}
+fun peopleComposer(fun1: PPL2PPL, fun2: PPL2PPL): PPL2PPL = {fun1(fun2(it))}
 
 val traditionalCouple = peopleComposer(::marryCouple, ::sameSurname)
 
