@@ -28,9 +28,11 @@ data class Person(
 fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List<String>, cities: List<City>) =
     Person(
         pn = PNGenerator.generate(),
+
         firstNames = (1..Random.nextInt(1, 4))
-            .fold(listOf(), { acc, i -> acc + (firstNames - acc).random() }),
+            .fold(listOf(), { acc, _ -> acc + (firstNames - acc).random() }),
         surName = surNames.random(),
+
         streetName = streets.random(),
         streetNumber = Random.nextInt(1, 200),
         city = cities.random(),

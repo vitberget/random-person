@@ -17,6 +17,7 @@ fun getFirstnames() = processResourceIntoLines("/first-names")
 
 
 fun getCities() = processResourceIntoLines("/cities")
+    .asSequence()
     .map { it.split(" ") }
     .filter { it.size == 2 }
     .filterNot { it[0].isBlank() }
@@ -27,3 +28,4 @@ fun getCities() = processResourceIntoLines("/cities")
             code = it[0].trim().toInt()
         )
     }
+    .toList()

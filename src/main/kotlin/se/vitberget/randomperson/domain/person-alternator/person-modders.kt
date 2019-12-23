@@ -24,7 +24,7 @@ fun makeBaby(parents: List<Person>): List<Person> {
 
         surName = parents.random().surName,
         firstNames = (1..Random.nextInt(1, Math.min(4, names.size)))
-            .fold(listOf(), { acc, i -> acc + (names - acc).random() }),
+            .fold(listOf(), { acc, _ -> acc + (names - acc).random() }),
 
         streetName = adressParent.streetName,
         streetNumber = adressParent.streetNumber,
