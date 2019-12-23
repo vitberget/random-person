@@ -10,16 +10,16 @@ fun main(args: Array<String>) {
     val streets = getStreets()
     val cities = getCities()
 
-    val persons = (1..1000).map { randomPerson(firstNames, surNames, streets, cities) }
+    val persons = (1..4).map { randomPerson(firstNames, surNames, streets, cities) }
 
     println("persons ${persons.size}")
 
-//    println("pns ${PNGenerator.pns().sorted()}")
+    val moddedPersons1 = marryTraditionalPpl(persons, 0)
 
-    val moddedPersons = marryTraditionalPpl(persons, 100)
-
-    println("moddedPersons ${moddedPersons.size}")
+    println("moddedPersons ${moddedPersons1.size}")
     println()
+
+    val moddedPersons = makeBabies( moddedPersons1, 1 )
 
     moddedPersons.forEachIndexed { idx, person ->
         println(

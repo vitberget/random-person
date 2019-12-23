@@ -10,6 +10,7 @@ fun insertIntoDB(person: Person, connection: Connection) {
     insertIntoDBName(id, person, connection)
     insertIntoDBAdress(id, person, connection)
     insertIntoDBMarried(id, person, connection)
+    insertIntoDBParents(id, person, connection)
 }
 
 fun insertIntoDBMarried(id: Long, person: Person, connection: Connection) {
@@ -26,6 +27,24 @@ fun insertIntoDBMarried(id: Long, person: Person, connection: Connection) {
             it.executeUpdate()
         }
 
+    }
+}
+
+fun insertIntoDBParents(id: Long, person: Person, connection: Connection) {
+    if (person.parents != null) {
+        connection.prepareStatement(
+            """insert into relation
+               (people_id, relation_pn, relation_type)
+               values (?,?,?)"""
+        ).use {
+            it.setLong(1, id)
+            it.setString(3, "P")
+
+            person.parents.forEach {
+                p -> it.setLong(2, p)
+                it.executeUpdate()
+            }
+        }
     }
 }
 
