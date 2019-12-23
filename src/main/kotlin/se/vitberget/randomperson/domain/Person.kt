@@ -1,4 +1,7 @@
-package se.vitberget.randomperson
+package se.vitberget.randomperson.domain
+
+import java.time.Year
+import kotlin.random.Random
 
 data class Person(
     val pn: Long,
@@ -21,3 +24,15 @@ data class Person(
         """.trimMargin()
     }
 }
+
+fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List<String>, cities: List<City>) =
+    Person(
+        pn = PNGenerator.generate(),
+        firstNames = (1..Random.nextInt(1, 4))
+            .fold(listOf(), { acc, i -> acc + (firstNames - acc).random() }),
+        surName = surNames.random(),
+        streetName = streets.random(),
+        streetNumber = Random.nextInt(1, 200),
+        city = cities.random(),
+        born = Year.now().value - Random.nextInt(20, 80)
+    )

@@ -1,7 +1,6 @@
 package se.vitberget.randomperson.mariadb
 
-import se.vitberget.randomperson.City
-import se.vitberget.randomperson.Person
+import se.vitberget.randomperson.domain.Person
 import java.sql.Connection
 import java.sql.Statement
 
@@ -92,20 +91,4 @@ fun insertIntoDBPeople(person: Person, connection: Connection): Long {
         generatedKeys.next()
         return generatedKeys.getLong(1)
     }
-}
-
-fun main(args: Array<String>) {
-    val c = getConnection()
-    val p = Person(
-        firstNames = listOf("Arne"),
-        surName = "Banan",
-        pn = 1234567L,
-        married = 7654321L,
-        born = 1977,
-        streetName = "Homer strett",
-        streetNumber = 1,
-        city = City(name = "MyCity", code = 12345)
-    )
-
-    insertIntoDB(p, c)
 }

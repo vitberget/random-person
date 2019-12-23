@@ -2,6 +2,7 @@ package se.vitberget.randomperson.mariadb
 
 import java.sql.Connection
 import java.sql.DriverManager
+import java.util.*
 
 
 fun dropDBSchema(con: Connection) {
@@ -20,12 +21,19 @@ fun initDBSchema(con: Connection) {
     createTableName(con)
 }
 
-fun getConnection() = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ppl", "ppl", "ppl")
+fun getConnection(props: Properties): Connection {
+    return DriverManager.getConnection(
+        "jdbc:mariadb://${props.getProperty("mariadb.host")}/${props.getProperty("mariadb.schema")}",
+        props.getProperty("mariadb.username"),
+        props.getProperty("mariadb.password")
+    )
+}
+
 
 fun createTableAdress(connection: Connection) {
     connection.createStatement().use {
-     it.executeUpdate(
-         """create table if not exists adress  
+        it.executeUpdate(
+            """create table if not exists adress  
             (
                 id int auto_increment,
                 people_id int not null,
@@ -38,7 +46,7 @@ fun createTableAdress(connection: Connection) {
                 constraint adress_ppl_id_fk foreign key (people_id) references people (id)
             ); 
          """
-     )
+        )
     }
 }
 

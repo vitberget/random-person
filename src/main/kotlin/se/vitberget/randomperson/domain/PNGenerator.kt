@@ -1,4 +1,4 @@
-package se.vitberget.randomperson
+package se.vitberget.randomperson.domain
 
 import kotlin.random.Random
 
