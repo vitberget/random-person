@@ -4,7 +4,9 @@ import java.sql.Connection
 import java.sql.DriverManager
 
 
-fun main() {
+fun main() = initDBSchema()
+
+fun initDBSchema() {
     val c = getConnection()
     createTablePeople(c)
     createTableAdress(c)
@@ -17,7 +19,7 @@ fun getConnection() = DriverManager.getConnection("jdbc:mariadb://localhost:3306
 fun createTableAdress(connection: Connection) {
     connection.createStatement().use {
      it.executeUpdate(
-         """create table adress
+         """create table if not exists adress  
             (
                 id int auto_increment,
                 people_id int not null,
@@ -37,7 +39,7 @@ fun createTableAdress(connection: Connection) {
 fun createTableName(connection: Connection) {
     connection.createStatement().use {
         it.executeUpdate(
-            """create table name
+            """create table if not exists name
             (
                 id int auto_increment,
                 people_id int not null,
@@ -55,7 +57,7 @@ fun createTableName(connection: Connection) {
 fun createTableRelation(connection: Connection) {
     connection.createStatement().use {
         it.executeUpdate(
-            """create table relation
+            """create table if not exists relation
             (
                 id int auto_increment,
                 people_id int not null,
@@ -74,7 +76,7 @@ fun createTableRelation(connection: Connection) {
 fun createTablePeople(connection: Connection) {
     connection.createStatement().use {
         it.executeUpdate(
-            """create table people
+            """create table if not exists people
             (
                 id int auto_increment,
                 pn long not null,
@@ -86,7 +88,7 @@ fun createTablePeople(connection: Connection) {
         )
 
         it.executeUpdate(
-            """create unique index people_pn_uindex
+            """create unique index if not exists people_pn_uindex
                 on people (pn);"""
         )
     }
