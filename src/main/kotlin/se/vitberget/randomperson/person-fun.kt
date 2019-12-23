@@ -7,8 +7,7 @@ fun randomPerson(firstNames: List<String>, surNames: List<String>, streets: List
     Person(
         pn = PNGenerator.generate(),
         firstNames = (1..Random.nextInt(1, 4))
-            .fold(listOf<String>(),
-                { acc, i -> acc + (firstNames - acc).random()}),
+            .fold(listOf(), { acc, i -> acc + (firstNames - acc).random()}),
         surName = surNames.random(),
         streetName = streets.random(),
         streetNumber = Random.nextInt(1, 200),
