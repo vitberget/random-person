@@ -20,6 +20,7 @@ typealias PPL2PPL = (List<Person>) -> List<Person>
 fun modifyPeople(
     modderFn: PPL2PPL,
     filterFn: (Person) -> Boolean,
+    removeThem: Boolean,
     persons: List<Person>,
     times: Int
 ): List<Person> {
@@ -32,12 +33,14 @@ fun modifyPeople(
             println("processed $it/$times")
 
         val p1 = unModded.random()
-        unModded.remove(p1)
+        if (removeThem) unModded.remove(p1)
         val p2 = unModded.random()
-        unModded.remove(p2)
+        if (removeThem) {
+            unModded.remove(p2)
+            modPersons.remove(p1)
+            modPersons.remove(p2)
+        }
 
-        modPersons.remove(p1)
-        modPersons.remove(p2)
 
         moddedByMe.addAll(modderFn(listOf(p1, p2)))
     }
@@ -70,24 +73,26 @@ fun makeBaby(parents: List<Person>): List<Person> {
         city = adressParent.city
     )
 
-    return parents + baby
+    return listOf(baby)
 }
 
 fun sameSurname(family: List<Person>) = family.map { it.copy(surName = family[0].surName) }
 
-fun <PARAM1_TYPE, PARAM2_TYPE, PARAM3_TYPE, PARAM4_TYPE, RETURN_TYPE>
-        curryPeople(theFunction: (PARAM1_TYPE, PARAM2_TYPE, PARAM3_TYPE, PARAM4_TYPE) -> RETURN_TYPE):
-            (PARAM1_TYPE) -> (PARAM2_TYPE) -> (PARAM3_TYPE, PARAM4_TYPE) -> RETURN_TYPE =
+fun <TYPE1, TYPE2, TYPE3, TYPE4, TYPE5, RETURN_TYPE>
+        curryPeople(theFunction: (TYPE1, TYPE2, TYPE3, TYPE4, TYPE5) -> RETURN_TYPE):
+            (TYPE1) -> (TYPE2) -> (TYPE3) -> (TYPE4, TYPE5) -> RETURN_TYPE =
     { param1 ->
         { param2 ->
-            { param3, param4 ->
-                theFunction(param1, param2, param3, param4)
+            { param3 ->
+                { param4, param5 ->
+                    theFunction(param1, param2, param3, param4, param5)
+                }
             }
         }
     }
 
 
-val marryPpl = curryPeople(::modifyPeople)(::marryCouple)(::isUnmarried)
+val marryPpl = curryPeople(::modifyPeople)(::marryCouple)(::isUnmarried)(true)
 
 fun isUnmarried(person: Person) = person.married == null
 fun isParentMaterial(person: Person) = person.parents == null && person.born < Year.now().value - 20
@@ -96,6 +101,6 @@ fun peopleComposer(fun1: PPL2PPL, fun2: PPL2PPL): PPL2PPL = { fun1(fun2(it)) }
 
 val traditionalCouple = peopleComposer(::marryCouple, ::sameSurname)
 
-val marryTraditionalPpl = curryPeople(::modifyPeople)(traditionalCouple)(::isUnmarried)
+val marryTraditionalPpl = curryPeople(::modifyPeople)(traditionalCouple)(::isUnmarried)(true)
 
-val makeBabies = curryPeople(::modifyPeople)(::makeBaby)(::isParentMaterial)
+val makeBabies = curryPeople(::modifyPeople)(::makeBaby)(::isParentMaterial)(false)

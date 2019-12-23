@@ -4,14 +4,20 @@ import java.sql.Connection
 import java.sql.DriverManager
 
 
-fun main() = initDBSchema()
+fun dropDBSchema(con: Connection) {
+    con.createStatement().use {
+        it.executeUpdate("DROP TABLE adress")
+        it.executeUpdate("DROP TABLE name")
+        it.executeUpdate("DROP TABLE relation")
+        it.executeUpdate("DROP TABLE people")
+    }
+}
 
-fun initDBSchema() {
-    val c = getConnection()
-    createTablePeople(c)
-    createTableAdress(c)
-    createTableRelation(c)
-    createTableName(c)
+fun initDBSchema(con: Connection) {
+    createTablePeople(con)
+    createTableAdress(con)
+    createTableRelation(con)
+    createTableName(con)
 }
 
 fun getConnection() = DriverManager.getConnection("jdbc:mariadb://localhost:3306/ppl", "ppl", "ppl")
