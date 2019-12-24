@@ -3,7 +3,7 @@ package se.vitberget.randomperson
 import se.vitberget.randomperson.domain.City
 
 fun processResourceIntoLines(resource: String) =
-    String::class.java.getResource(resource)
+    City::class.java.getResource(resource)
         .readText()
         .lines()
         .filter { it.isNotBlank() }
