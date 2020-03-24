@@ -17,13 +17,16 @@ fun makeBaby(parents: List<Person>): List<Person> {
     val adressParent = parents.random()
     val names = parents.flatMap { it.firstNames }.distinct()
 
+    val namesMaxFour = Math.min(4, names.size)
+    val upperLimit = if (namesMaxFour == 1) 1 else Random.nextInt(1, namesMaxFour)
+
     val baby = Person(
         parents = parents.map { it.pn },
         pn = PNGenerator.generate(),
         born = Year.now().value - Random.nextInt(0, 10),
 
         surName = parents.random().surName,
-        firstNames = (1..Random.nextInt(1, Math.min(4, names.size)))
+        firstNames = (1..upperLimit)
             .fold(listOf(), { acc, _ -> acc + (names - acc).random() }),
 
         streetName = adressParent.streetName,

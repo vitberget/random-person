@@ -4,7 +4,9 @@ import se.vitberget.randomperson.domain.`person-alternator`.makeBabies
 import se.vitberget.randomperson.domain.`person-alternator`.marryTraditionalPpl
 import se.vitberget.randomperson.domain.Person
 import se.vitberget.randomperson.domain.randomPerson
-import se.vitberget.randomperson.elastic.jsonIfy
+import se.vitberget.randomperson.elastic.dropAndCreateElasticIdx
+import se.vitberget.randomperson.elastic.getElasticClient
+import se.vitberget.randomperson.elastic.insertIntoElastic
 import se.vitberget.randomperson.mariadb.*
 import java.io.FileInputStream
 import java.util.*
@@ -36,10 +38,16 @@ fun main() {
 }
 
 fun doTheElastic(moddedPersons: List<Person>) {
+    val props = getProps()
+
+    val client = getElasticClient(props)
+    val idx = props.getProperty("elastic.index")
+
+    dropAndCreateElasticIdx(client, idx)
+
     moddedPersons
-        .forEach {
-            println(jsonIfy(it))
-        }
+        .chunked(10)
+        .forEach { insertIntoElastic(client, idx, it) }
 
 }
 

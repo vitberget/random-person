@@ -101,10 +101,7 @@ fun createTablePeople(connection: Connection) {
         """
         )
 
-        it.executeUpdate(
-            """create unique index if not exists people_pn_uindex
-                on people (pn);"""
-        )
+        it.executeUpdate("create unique index if not exists people_pn_uindex on people (pn);")
     }
 }
 
