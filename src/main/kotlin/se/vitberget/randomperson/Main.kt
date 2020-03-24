@@ -4,6 +4,7 @@ import se.vitberget.randomperson.domain.`person-alternator`.makeBabies
 import se.vitberget.randomperson.domain.`person-alternator`.marryTraditionalPpl
 import se.vitberget.randomperson.domain.Person
 import se.vitberget.randomperson.domain.randomPerson
+import se.vitberget.randomperson.elastic.jsonIfy
 import se.vitberget.randomperson.mariadb.*
 import java.io.FileInputStream
 import java.util.*
@@ -30,12 +31,21 @@ fun main() {
         )
     }
 
+    doTheElastic(moddedPersons)
     doTheDB(moddedPersons)
+}
+
+fun doTheElastic(moddedPersons: List<Person>) {
+    moddedPersons
+        .forEach {
+            println(jsonIfy(it))
+        }
+
 }
 
 private fun doTheDB(moddedPersons: List<Person>) {
     val props = getProps()
-    val con = getConnection(props)
+    val con = getDBConnection(props)
 
     dropDBSchema(con)
     initDBSchema(con)

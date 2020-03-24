@@ -21,7 +21,7 @@ fun initDBSchema(con: Connection) {
     createTableName(con)
 }
 
-fun getConnection(props: Properties): Connection {
+fun getDBConnection(props: Properties): Connection {
     return DriverManager.getConnection(
         "jdbc:mariadb://${props.getProperty("mariadb.host")}/${props.getProperty("mariadb.schema")}",
         props.getProperty("mariadb.username"),
