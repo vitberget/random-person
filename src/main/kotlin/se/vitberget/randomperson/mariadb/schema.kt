@@ -7,10 +7,10 @@ import java.util.*
 
 fun dropDBSchema(con: Connection) {
     con.createStatement().use {
-        it.executeUpdate("DROP TABLE adress")
-        it.executeUpdate("DROP TABLE name")
-        it.executeUpdate("DROP TABLE relation")
-        it.executeUpdate("DROP TABLE people")
+        it.executeUpdate("DROP TABLE IF EXISTS adress")
+        it.executeUpdate("DROP TABLE IF EXISTS name")
+        it.executeUpdate("DROP TABLE IF EXISTS relation")
+        it.executeUpdate("DROP TABLE IF EXISTS people")
     }
 }
 
@@ -93,7 +93,7 @@ fun createTablePeople(connection: Connection) {
             """create table if not exists people
             (
                 id int auto_increment,
-                pn long not null,
+                pn bigint not null,
                 born int not null,
                 
                 constraint people_pk primary key (id)
