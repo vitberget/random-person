@@ -50,7 +50,7 @@ fun createElasticIdx(client: RestClient, idx: String) {
 fun insertIntoElastic(client: RestClient, idx: String, persons: List<Person>) {
     val payload = persons
         .map { jsonIfy(it) }
-        .map { "{\"index\": {\"_index\": \"idx\"}}\n$it\n" }
+        .map { "{\"index\": {\"_index\": \"$idx\"}}\n$it\n" }
         .joinToString("")
 //        .joinToString(separator = "\n")
 

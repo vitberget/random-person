@@ -6,6 +6,7 @@ import java.sql.Statement
 
 fun insertIntoDB(person: Person, connection: Connection) {
     val id = insertIntoDBPeople(person, connection)
+    println("id $id")
     insertIntoDBName(id, person, connection)
     insertIntoDBAdress(id, person, connection)
     insertIntoDBMarried(id, person, connection)
